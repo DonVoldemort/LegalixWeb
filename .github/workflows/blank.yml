@@ -3,7 +3,7 @@ name: Firebase Deploy
 on:
   push:
     branches:
-      - main  # Cambia 'main' por el nombre de tu rama principal si es diferente asd
+      - main
 
 jobs:
   deploy:
@@ -20,7 +20,11 @@ jobs:
       - name: Install Firebase CLI
         run: npm install -g firebase-tools
 
-      - name: Login to Firebase
-        run: firebase login:ci --token "98f3db4b08d62cbb5977c8c554959ecc24ffcd01"
+      - name: Decode Firebase service account key
+        run: echo "${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}" | base64 -d > firebase-admin-key.json
+
+      - name: Authenticate Firebase
+        run: firebase login:ci --no-localhost
+
       - name: Deploy to Firebase
-        run: firebase deploy --token "98f3db4b08d62cbb5977c8c554959ecc24ffcd01"
+        run: firebase deploy --token "$(firebase login:ci --json | jq -r '.token')"
