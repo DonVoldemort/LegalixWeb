@@ -3,7 +3,7 @@ name: Firebase Deploy
 on:
   push:
     branches:
-      - main  # Cambia 'main' por el nombre de tu rama principal si es diferente
+      - main  # Cambia 'main' por el nombre de tu rama principal si es diferente asd
 
 jobs:
   deploy:
